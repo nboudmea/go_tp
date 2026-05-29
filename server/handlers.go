@@ -20,3 +20,13 @@ func writeError(w http.ResponseWriter, status int, msg string) {
 func (a *App) listStations(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, a.store.All())
 }
+
+func (a *App) getStation(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	station, ok := a.store.Get(id)
+	if !ok {
+		writeError(w, http.StatusNotFound, "station introuvable")
+		return
+	}
+	writeJSON(w, http.StatusOK, station)
+}
